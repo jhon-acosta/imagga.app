@@ -1,5 +1,7 @@
 ## Imagga.app dockerizada
 
+- El aplicativo se levanta en: [http://127.0.0.1:3000](http://127.0.0.1:3000)
+
 ### Docker
 
 Seguir los siguientes pasos para levantar el servicio WebApp:
