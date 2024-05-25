@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useUtilidades } from '@/assets/utils'
+import { configs } from '@/assets/configs/enviroments'
 import { Tag, Card, Image, Button, Divider, Skeleton, Typography } from 'antd'
 import { ImageRandom, ImaggaResponse, NextPageWithLayout } from '@/types/global'
-import { configs } from '@/assets/configs/enviroments'
 
 const username = configs.IMAGGA_API_KEY
 const password = configs.IMAGGA_API_SECRET

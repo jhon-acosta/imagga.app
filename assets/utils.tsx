@@ -1,11 +1,4 @@
-import axios from 'axios'
 import { App } from 'antd'
-import { configs } from './configs/enviroments'
-
-/** Recursos axios */
-export const axiosCustom = axios.create({
-  baseURL: configs.HOST_API,
-})
 
 /**Otros recursos */
 export function validarErrores(error: Record<string, any>) {

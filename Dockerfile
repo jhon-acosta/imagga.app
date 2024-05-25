@@ -1,23 +1,23 @@
-FROM node:20-alpine as build
+# Etapa 1: Construcción
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-ARG NEXT_PUBLIC_API
-ENV NEXT_PUBLIC_API=${NEXT_PUBLIC_API}
+ARG NEXT_PUBLIC_IMAGGA_API_KEY
+ARG NEXT_PUBLIC_IMAGGA_API_SECRET
 
-ARG NEXT_PUBLIC_SOCKET_URL
-ENV NEXT_PUBLIC_SOCKET_URL=${NEXT_PUBLIC_SOCKET_URL}
+ENV NEXT_PUBLIC_IMAGGA_API_KEY=${NEXT_PUBLIC_IMAGGA_API_KEY}
+ENV NEXT_PUBLIC_IMAGGA_API_SECRET=${NEXT_PUBLIC_IMAGGA_API_SECRET}
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --only=production
+RUN npm ci
 
 COPY . .
 
-RUN npm install --only=development
-
 RUN npm run build
 
+# Etapa 2: Producción
 FROM node:20-alpine
 
 WORKDIR /app

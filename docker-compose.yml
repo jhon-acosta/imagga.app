@@ -1,0 +1,11 @@
+services:
+  imagga.app:
+    image: imagga.app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_IMAGGA_API_KEY: acc_898eb6dc68c2943
+        NEXT_PUBLIC_IMAGGA_API_SECRET: 4bc511002aa829f6ba4a53a5e4a83690
+    ports:
+      - '3000:3000'

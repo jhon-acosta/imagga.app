@@ -1,34 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Imagga.app dockerizada
 
-## Getting Started
+### Docker
 
-First, run the development server:
+Seguir los siguientes pasos para levantar el servicio WebApp:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+# 1. Ubicado en la raíz del proyecto, ejecutar:
+docker build -t imagga.app --build-arg NEXT_PUBLIC_IMAGGA_API_KEY=acc_898eb6dc68c2943 --build-arg NEXT_PUBLIC_IMAGGA_API_SECRET=4bc511002aa829f6ba4a53a5e4a83690 .
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `docker build`: Este es el comando principal para construir una imagen de Docker a partir de un conjunto de instrucciones definidas en un archivo Dockerfile.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `-t`: La opción -t (abreviatura de --tag) se utiliza para etiq uetar la imagen con un nombre específico. En este caso, la imagen será etiquetada como imagga.app.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `--build-arg NEXT_PUBLIC_IMAGGA_API_KEY=acc_898eb6dc68c2943`: Establece una variable de entorno dentro del contenedor llamada NEXT_PUBLIC_IMAGGA_API_KEY con el valor respectivo.
 
-## Learn More
+- `--build-arg NEXT_PUBLIC_IMAGGA_API_SECRET=4bc511002aa829f6ba4a53a5e4a83690`: Establece una variable de entorno dentro del contenedor llamada NEXT_PUBLIC_IMAGGA_API_SECRET con el valor respectivo.
 
-To learn more about Next.js, take a look at the following resources:
+- `.`: El punto (.) indica que el contexto de construcción es el directorio actual. Docker utilizará este directorio para encontrar el Dockerfile y cualquier archivo que se mencione en el Dockerfile.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+En la etapa anterior, la imagen ya se encuentra creada.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+# 2. Para levantar un contenedor, ejecutar:
+docker run -d -p 3000:3000 --name imagga.app imagga.app
+```
 
-## Deploy on Vercel
+- `docker run`: Comando principal para ejecutar un contenedor.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `-d`: Ejecuta el contenedor en segundo plano (modo desacoplado).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `-p 3000:3000`: Publica el puerto 3000 del contenedor en el puerto 3000 del host. Esto permite que puedas acceder a la aplicación desde tu máquina local en el puerto 3000.
+
+- `--name imagga.app`: Asigna un nombre al contenedor. En este caso, el contenedor se llamará _imagga.app_.
+
+- `imagga.app`: Especifica la imagen de Docker que se usará para crear el contenedor. Esta debe ser una imagen previamente construida y etiquetada como imagga.app.
+
+### Docker Compose
+
+Se utiliza la siguiente configuración:
+
+```yml
+# docker-compose.yml
+services:
+  imagga.app:
+    image: imagga.app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_IMAGGA_API_KEY: acc_898eb6dc68c2943
+        NEXT_PUBLIC_IMAGGA_API_SECRET: 4bc511002aa829f6ba4a53a5e4a83690
+    ports:
+      - '3000:3000'
+```
+
+- Se define el nombre del contenedor a ser levantado `imagga.app`
+- Se utilizará la imagen `imagga.app`, construida a partir del Dockerfile en el directorio actual.
+- Se pasan argumentos de compilación al Dockerfile para definir las variables de entorno `NEXT_PUBLIC_IMAGGA_API_KEY` y `NEXT_PUBLIC_IMAGGA_API_SECRET`.
+- El puerto 3000 del contenedor se mapea al puerto 3000 del host para permitir el acceso a la aplicación desde fuera del contenedor.
+
+```bash
+# Ejecutar
+docker-compose up -d
+```
+
+_NOTA_: Cabe destacar que las variables de entorno son de naturaleza confidencial. En este caso, las claves se han adjuntado con fines académicos.
